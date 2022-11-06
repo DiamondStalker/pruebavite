@@ -1,34 +1,51 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useState, useEffect } from "react";
+import axios from "axios";
+import Login from "./components/Login";
+import Weekdays from "./components/Weekdays"
+import Test from "./components/Test";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const urlWithProxy = "/api/obtenerusuarios";
+
+  const [displayLogin, setdisplayLogin] = useState("block");
+  const [displayDays, setDisplayDays] = useState("none");
+
+  useEffect(() => {
+    if (window.sessionStorage.getItem("Logged")) {
+      setdisplayLogin("none");
+      setDisplayDays("block");
+    } else {
+      console.log("No hay sesion");
+    }
+  }, []);
+
+  //console.log(displayLogin);
+
+
+  /*
+  function getDataFromServer() {
+    axios
+      .get(urlWithProxy)
+      .then((res) => console.log(res.data))
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+*/
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div>
+    
+      {/* ---------------------------------- LOGIN --------------------------------- */}
+      <div style={{ display: displayLogin }} className="login">
+        <Login />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+      {/* ---------------------------- Days of the week ---------------------------- */}
+      <div className="daysOfWeek" style={{ display: displayDays }}>
+        <Weekdays/>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
